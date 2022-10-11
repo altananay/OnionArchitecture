@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.Repositories;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,14 @@ namespace WebAPI.Controllers
     public class UsersController : ControllerBase
     {
         IUserService _userService;
+        IUserReadRepository _userReadRepository;
+        IUserClaimReadRepository _userClaimReadRepository;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IUserReadRepository userReadRepository, IUserClaimReadRepository userClaimReadRepository)
         {
             _userService = userService;
+            _userReadRepository = userReadRepository;
+            _userClaimReadRepository = userClaimReadRepository;
         }
 
         [HttpGet("getbyemail")]
@@ -37,5 +42,12 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        //[HttpGet("getclaims")]
+        //public IActionResult GetClaims(string id)
+        //{
+        //    var result = _userClaimReadRepository.GetClaims(id);
+        //    return Ok(result);
+        //}
     }
 }

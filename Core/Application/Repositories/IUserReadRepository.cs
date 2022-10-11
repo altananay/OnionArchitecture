@@ -10,6 +10,6 @@ namespace Application.Repositories
 {
     public interface IUserReadRepository : IReadRepository<User>
     {
-        
+        //Task<OperationClaim> GetClaims(string id);
     }
 }

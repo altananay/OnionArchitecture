@@ -16,23 +16,23 @@ namespace WebAPI.Controllers
             _authService = authService;
         }
 
-        //[HttpPost("login")]
-        //public ActionResult Login(UserForLoginDto userForLoginDto)
-        //{
-        //    var userToLogin = _authService.Login(userForLoginDto);
-        //    if (!userToLogin.IsSuccess)
-        //    {
-        //        return BadRequest(userToLogin.Message);
-        //    }
+        [HttpPost("login")]
+        public ActionResult Login(UserForLoginDto userForLoginDto)
+        {
+            var userToLogin = _authService.Login(userForLoginDto);
+            if (!userToLogin.IsSuccess)
+            {
+                return BadRequest(userToLogin.Message);
+            }
 
-        //    var result = _authService.CreateAccessToken(userToLogin.Data);
-        //    if (result.IsSuccess)
-        //    {
-        //        return Ok(result);
-        //    }
+            var result = _authService.CreateAccessToken(userToLogin.Data);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
 
-        //    return BadRequest(result.Message);
-        //}
+            return BadRequest(result.Message);
+        }
 
         [HttpPost("register")]
         public ActionResult Register(UserForRegisterDto userForRegisterDto)

@@ -10,6 +10,6 @@ namespace Application.Helpers
 {
     public interface ITokenHelper
     {
-        AccessToken CreateToken(User user);
+        AccessToken CreateToken(User user/*, OperationClaim operationClaims*/);
     }
 }

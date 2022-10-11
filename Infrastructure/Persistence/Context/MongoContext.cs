@@ -16,10 +16,10 @@ namespace Persistence.Context
         public IMongoDatabase database { get; set; }
 
 
-        public MongoContext(string databaseName)
+        public MongoContext()
         {
             this.connection = new MongoClient(Configuration.ConnectionString);
-            this.database = this.connection.GetDatabase(databaseName);
+            this.database = this.connection.GetDatabase("test");
         }
     }
 }

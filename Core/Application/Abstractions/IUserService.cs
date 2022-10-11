@@ -15,7 +15,7 @@ namespace Application.Abstractions
         //IResult Delete(User user);
         //IResult Update(User user);
         //Refactor edilecek.
-        //List<OperationClaim> GetClaims(User user);
+        //Task<OperationClaim> GetClaims(User user);
         IDataResult<User> GetByMail(string email);
     }
 }

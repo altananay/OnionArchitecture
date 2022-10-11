@@ -1,6 +1,8 @@
 ﻿using Application.Abstractions;
+using Application.Constants;
 using Application.DTOs;
 using Application.Helpers;
+using Application.Repositories;
 using Application.Results;
 using Application.Security;
 using Domain.Entities;
@@ -15,12 +17,14 @@ namespace Persistence.Concretes
     public class AuthManager : IAuthService
     {
         private IUserService _userService;
-        //private ITokenHelper _tokenHelper;
+        private ITokenHelper _tokenHelper;
+        private IUserClaimReadRepository _userClaimReadRepository;
 
-        public AuthManager(IUserService userService /*ITokenHelper tokenHelper*/)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IUserClaimReadRepository userClaimReadRepository)
         {
             _userService = userService;
-            //_tokenHelper = tokenHelper;
+            _tokenHelper = tokenHelper;
+            _userClaimReadRepository = userClaimReadRepository;
         }
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
@@ -37,39 +41,39 @@ namespace Persistence.Concretes
                 Status = true
             };
             _userService.Add(user);
-            return new SuccessDataResult<User>(user, "kullanıcı kayıt edildi");
+            return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
-        //public IDataResult<User> Login(UserForLoginDto userForLoginDto)
-        //{
-        //    var userToCheck = _userService.GetByMail(userForLoginDto.Email);
-        //    if (userToCheck == null)
-        //    {
-        //        return new ErrorDataResult<User>(Messages.UserNotFound);
-        //    }
+        public IDataResult<User> Login(UserForLoginDto userForLoginDto)
+        {
+            var userToCheck = _userService.GetByMail(userForLoginDto.Email);
+            if (userToCheck == null)
+            {
+                return new ErrorDataResult<User>(Messages.UserNotFound);
+            }
 
-        //    if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
-        //    {
-        //        return new ErrorDataResult<User>(Messages.PasswordError);
-        //    }
+            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
+            {
+                return new ErrorDataResult<User>(Messages.PasswordError);
+            }
 
-        //    return new SuccessDataResult<User>(userToCheck.Data, Messages.SuccessfulLogin);
-        //}
+            return new SuccessDataResult<User>(userToCheck.Data, Messages.SuccessfulLogin);
+        }
 
-        //public IResult UserExists(string email)
-        //{
-        //    if (_userService.GetByMail(email) != null)
-        //    {
-        //        return new ErrorResult(Messages.UserAlreadyExists);
-        //    }
-        //    return new SuccessResult();
-        //}
+        public IResult UserExists(string email)
+        {
+            if (_userService.GetByMail(email) != null)
+            {
+                return new ErrorResult(Messages.UserAlreadyExists);
+            }
+            return new SuccessResult();
+        }
 
-        //public IDataResult<AccessToken> CreateAccessToken(User user)
-        //{
-        //    var claims = _userService.GetClaims(user);
-        //    var accessToken = _tokenHelper.CreateToken(user, claims);
-        //    return new SuccessDataResult<AccessToken>(accessToken, Messages.LoginSuccessful);
-        //}
+        public IDataResult<AccessToken> CreateAccessToken(User user)
+        {
+            //var claims = _userClaimReadRepository.GetClaims(user._id);
+            var accessToken = _tokenHelper.CreateToken(user);
+            return new SuccessDataResult<AccessToken>(accessToken, Messages.LoginSuccessful);
+        }
     }
 }
