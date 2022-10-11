@@ -23,6 +23,7 @@ namespace Persistence
             //builder.RegisterType<MongoContext>().As<IMongoContext>().SingleInstance();
 
             //builder.RegisterType<ProductReadRepository>().As<IProductReadRepository>().SingleInstance();
+            //builder.RegisterType<ProductWriteRepository>().As<IProductWriteRepository>().SingleInstance();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

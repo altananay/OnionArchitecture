@@ -24,7 +24,6 @@ namespace Persistence.Repositories
 
         public IMongoCollection<T> collection => _mongoContext.database.GetCollection<T>(_collection);
 
-        [SecuredOperation("admin,product.add")]
         public async Task<bool> Add(T entity)
         {
             await collection.InsertOneAsync(entity);

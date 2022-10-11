@@ -1,4 +1,5 @@
-﻿using Application.Repositories;
+﻿using Application.Abstractions;
+using Application.Repositories;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ namespace WebAPI.Controllers
     {
         private readonly IProductReadRepository _productReadRepository;
         private readonly IProductWriteRepository _productWriteRepository;
+        private readonly IProductService _productService;
 
-        public ProductsController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository)
+        public ProductsController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, IProductService productService)
         {
             _productReadRepository = productReadRepository;
             _productWriteRepository = productWriteRepository;
+            _productService = productService;
         }
 
         [HttpGet("{id}")]
@@ -35,9 +38,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("addproduct")]
-        public async Task<IActionResult> AddProduct(Product product)
+        public IActionResult AddProduct(Product product)
         {
-            var result = await _productWriteRepository.Add(product);
+            var result = _productService.Add(product);
             return Ok(result);
         }
 

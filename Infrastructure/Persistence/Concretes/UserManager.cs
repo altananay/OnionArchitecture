@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.Constants;
 using Application.Repositories;
 using Application.Results;
 using Domain.Entities;
@@ -24,7 +25,7 @@ namespace Persistence.Concretes
         public IResult Add(User user)
         {
             _userWriteRepository.Add(user);
-            return new SuccessResult("kullanıcı eklendi");
+            return new SuccessResult(Messages.UserRegistered);
         }
 
         //public IResult Delete(User user)

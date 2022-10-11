@@ -17,5 +17,6 @@ namespace Application.Constants
         public static string LoginSuccessful = "Giriş başarılı.";
         public static string UserAlreadyExists = "Kullanıcı daha önce kayıt olmuş.";
         public static string AuthorizationDenied = "Yetkiniz yok";
+        public static string ProductAdded = "Product added.";
     }
 }
